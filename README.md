@@ -1,7 +1,7 @@
 # Practica con Djago de una encuesta
 Encuesta web sobre los personajes de Rick y Morty escrito en Django
 
-## Primeros
+## Primeros pasos
 
 Se instala el framework Django en el entorno virtual de python:
 
@@ -26,3 +26,33 @@ Para crear una nueva app para el proyecto, ejecutamos:
 ```console
 $ python manage.py startapp <nombre_de_la_app>
 ```
+
+## Diseñando los diagramas Entidad-Relación para el ORM
+
+El diagrama de como estarán relacionados los objetos del ORM es el siguiente:
+
+![Diagrama Entidad-Relacion](./diagrama_ER.png)
+
+## Creación de los Modelos
+Los modelos son equivalentes en ORM a las tablas en una base de datos relacional. 
+Para crearlas, definimos nuestros modelos en el archivo models dentro de la app `encuesta`, y se definen como clases.
+
+Después de definir las clases de los modelos, debemos agregar las definiciones al archivo `settings.py` para que Django sepa que existen. Esto se hace agregando a la lista INSTALLED_APPS el siguiente elemento:
+
+`"<nombre_de_la_app>.apps.<nombre_de_la_app>Config"`
+
+o en otras palabras, se agrega toda la ruta a la clase definida en el archivo apps.py en la carpeta de la app que estamos trabajando.
+
+Una vez hecho esto, debemos ejecutar los siguientes comandos que crearan las migraciones de las clases definidas a tablas en la Base de Datos.
+
+```console
+$ python manage.py makemigrations encuesta
+```
+ 
+ El anterior comando convierte nuestros modelos en una descripción para que se puedan crear las tablas en la BD.
+
+ ```console
+ $ python manage.py migrate
+ ```
+
+ Django toma la descripción y la ejecuta por debajo en SQL sobre la BD directamente usando el parádigma ORM.
