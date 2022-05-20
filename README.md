@@ -107,3 +107,5 @@ admin.site.register(Pregunta, PreguntaAdmin)
 E ingresamos a la dirección [http://127.0.0.1:8000/admin/](##) y nos loggeamos con el user y el password que definimos arriba.
 
 Dentro de la interface gráfica del administrador, podremos agregar y modificar datos.
+
+![Muestra de como se ve el administrador personalizado](./administrador_personalizado.png)
