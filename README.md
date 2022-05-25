@@ -116,9 +116,15 @@ Los Views son las funcionalidades que tendrán por detrás cada vez que accedemo
 Puede hacer dos tipos de views según su funcionalidad: **Function Based Views** que están basadas en funciones de python, y **Generic Views** basadas en clases.
 
 Existen ciertos criterios para elegir uno u otra forma de construir los views: 
-* Si las funcionalidades son genericas, o sea presentar lista de opciones, presentar formularios, logearte, etc. Es preferible usar *Generic Views*. Aquí dos referencia para revisar
+* Si las funcionalidades son genericas, o sea presentar lista de opciones, presentar formularios, logearte, etc. Es preferible usar *Generic Views*. 
+Principalmente se usan cuando la funcionalidad sigue este patrón de tareas:
+
+    **Consulto la Base de Datos -> Traigo Datos -> Creo una Template -> Presento en Internet.**
+
+    Aquí dos referencia para revisar:
     * http://ccbv.co.uk/
     * https://docs.django.project.com/en/4.0/ref/class-based-views/
+
 
 * Si, las funcionalidades son muy especificas, personalizada que no tienen parecido a las funcionalidades ofrecidas por las *Generic Views*, entonces, usaremos *Function Based Views*.
 
@@ -155,5 +161,44 @@ urlpatterns = [
     # La siguente línea es la que se agrega:
     path('encuesta/', include('encuesta.urls'))
 ]
+```
 
+## Templates
+
+Cada view se puede ligar a un frontend en forma de **template**. Los templates son páginas html que mostraran los resultados de los views, y es la forma en como nuestra app interactua con el usuario.
+
+Para crear los templates, debemos hacer una carpeta nueva en el directorio de la aplicación llamada **/templates/<nombre de la aplicación>/**. Adentro, para cada view, debemos crear una template con el mismo nombre que la vista.
+
+Django tiene un lenguaje para crear templates de una aplicación: **Django template system**, el cual sirve para agregar o manipular el frontend html de la app.
+
+En dicho lenguaje, las instrucciones de python se escriben entre **{%** *lo que quieras declarar* **%}**, por ejemplo
+
+```django
+{% if lista_de_preguntas %}
+    *html*
+{% endif %}
+```
+
+El motor de templates, usa **{%    %}** para todo lo que son bloques, operaciones, condicionales, ciclos. Mientras que se usa **{{   }}** para llamar variables.
+
+En el directorio `/templates/encuesta/` hay ejemplos de como usar templates.
+
+### Tags o etiquetas
+Para trabajar mejor con respecto a referencias u otras funcionalidades en los templates, el **Django Template Language**, tiene tag que nos dan funcionalidades utiles, por ejemplo la etiqueta **url** que nos sirve para evitar el hardcodeo al escribir las direcciones url de nuestro proyecto, y mejor referenciarlas con nombres, por ejemplo:
+
+```html
+<form action="{% url 'encuesta:voto' pregunta_id %}" method="post">
+```
+
+Usar nombres en lugar de la ruta completa es posible si declaramos en el archivo `urls.py` de la app, un app_name para hacer referencia al nombre de la aplicación y el nombre del path ahi mismo declarado.
+
+## Agregando Static Files (CSS, Imágenes)
+
+Los archivos estáticos de nuestros templates, como archivos css, javascript, o imagenes se deben poner en el directorio `/static/encuesta/` dentro de la carpeta de la aplicación.
+
+Para poder indicarle al html que archivos importar con los estilos o los script de js, o imagenes, debemos darle la siguientes instrucciones, y la forma de invocarlos:
+
+```django
+{% load static %}
+<link rel="stylesheet" href="{% static 'encuesta/style.css' %}">
 ```
