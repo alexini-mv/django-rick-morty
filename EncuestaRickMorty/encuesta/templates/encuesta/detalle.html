@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/details.css' %}">
+    <title>{{ pregunta.pregunta_texto}}</title>
+</head>
+<body>
+    <form action="{% url 'encuesta:votos' pregunta.id %}" method="post">
+        <!-- esta la siguiente linea nos protegernos del hackeo csrf en formularios-->
+        {% csrf_token %} 
+    
+        <fieldset>
+    
+            <legend>
+                <h1>{{ pregunta.pregunta_texto }}</h1>
+            </legend>
+    
+            {% if error_message %}
+                <p><strong>{{ error_message  }}</strong></p>
+            {% endif %}
+    
+            {% for opcion in pregunta.opcion_set.all %}
+                <input type="radio" id="opcion{{ forloop.counter }}" name="opcion" value={{opcion.id}}>
+                <label for="opcion{{ forloop.counter}}">{{ opcion.opcion_texto }}</label><br>
+            {% endfor %}
+    
+        </fieldset>
+    
+        <input type="submit" value="Votar">
+    
+    </form>
+</body>
+</html>
+
+
+

@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'polls/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <title>Encuesta Rick y Morty</title>
+  </head>
+  <body>
+
+    <header>
+      <h1>Encuesta sobre los personajes de Rick y Morty</h1>
+    </header>
+
+    <main>
+        {% if lista_de_preguntas %}
+        <ul>
+            {% for pregunta in lista_de_preguntas %}
+                <li>
+                <a href="{% url 'encuesta:detalle' pregunta.id %}">{{ pregunta.pregunta_texto }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No hay una encuesta disponible. :(</p>
+        {% endif %}
+    </main>
+    <footer>
+        <a href="#">Mi página</a>
+        <a href="#">Contacto</a>
+        <a href="#">Politica de privacidad</a>
+        <a href="#">Terminos y condiciones</a>
+    </footer>
+  </body>
+</html>

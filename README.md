@@ -109,3 +109,51 @@ E ingresamos a la dirección [http://127.0.0.1:8000/admin/](##) y nos loggeamos 
 Dentro de la interface gráfica del administrador, podremos agregar y modificar datos.
 
 ![Muestra de como se ve el administrador personalizado](./administrador_personalizado.png)
+
+## Creación de los views
+Los Views son las funcionalidades que tendrán por detrás cada vez que accedemos a un template. En pocas palabras, los views son el backend y los template los frontend.
+
+Puede hacer dos tipos de views según su funcionalidad: **Function Based Views** que están basadas en funciones de python, y **Generic Views** basadas en clases.
+
+Existen ciertos criterios para elegir uno u otra forma de construir los views: 
+* Si las funcionalidades son genericas, o sea presentar lista de opciones, presentar formularios, logearte, etc. Es preferible usar *Generic Views*. Aquí dos referencia para revisar
+    * http://ccbv.co.uk/
+    * https://docs.django.project.com/en/4.0/ref/class-based-views/
+
+* Si, las funcionalidades son muy especificas, personalizada que no tienen parecido a las funcionalidades ofrecidas por las *Generic Views*, entonces, usaremos *Function Based Views*.
+
+Las views son declaradas en el archivo `views.py` dentro de la carpeta de la correspondiente app. Una vez que son declaradas, hay que agregar su referencia en el archivo `urls.py` de la carpeta aplicación:
+
+```python
+from django.urls import path
+
+from . import views
+
+app_name = "encuesta"
+
+urlpatterns = [
+    # Ejemplo de la ruta: /encuesta/
+    path('/', views.IndexView.as_view(), name='index'),
+    # Ejemplo de la ruta: /encuesta/detalle/5/
+    path('/detalle/<int:pk>/', views.DetalleView.as_view(), name='detalle'),
+    # Ejemplo de la ruta: /encuesta/resultado/5
+    path('/resultado/<int:pk>/', views.ResultadoView.as_view(), name='resultado'),
+    # Ejemplo de la ruta: /encuesta/votos/5
+    path('/votos/<int:pk>/', views.ResultadoView.as_view(), name='voto')
+]
+```
+
+Una vez declaradas las rutas donde se invocaran las views, hay que incluirlas en la lista de rutas de la aplicación principal. Esto se hace en el archivo `urls.py` en la carpeta del proyecto principal.
+En dicho archivo, ya viene documentado la forma en como se deben incluir las rutas. En este caso será como sigue:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # La siguente línea es la que se agrega:
+    path('encuesta/', include('encuesta.urls'))
+]
+
+```
